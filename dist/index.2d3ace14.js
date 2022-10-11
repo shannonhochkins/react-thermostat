@@ -3009,15 +3009,19 @@ function Thermostat({ size =200 , min =0 , max =100 , value , handle: handleInpu
     const controllable = !disabled && Boolean(onChange);
     (0, _react.useEffect)(()=>{
         const canvasRef = _canvasRef.current;
-        const ctx = canvasRef.getContext("2d");
-        const gradient = ctx.createLinearGradient(0, 0, (0, _constants.CANVAS_WIDTH), (0, _constants.CANVAS_HEIGHT));
-        track.colors?.forEach((color, index)=>{
-            const offset = index === 0 ? 0.2 : index === track.colors.length - 1 ? 0.8 : index / (track.colors.length - 1);
-            gradient.addColorStop(offset, color);
-        });
-        ctx.fillStyle = gradient;
-        ctx.rect(0, 0, (0, _constants.CANVAS_WIDTH), (0, _constants.CANVAS_HEIGHT));
-        ctx.fill();
+        if (canvasRef) {
+            const ctx = canvasRef.getContext("2d");
+            if (ctx) {
+                const gradient = ctx.createLinearGradient(0, 0, (0, _constants.CANVAS_WIDTH), (0, _constants.CANVAS_HEIGHT));
+                track.colors?.forEach((color, index)=>{
+                    const offset = index === 0 ? 0.2 : index === track.colors.length - 1 ? 0.8 : index / (track.colors.length - 1);
+                    gradient.addColorStop(offset, color);
+                });
+                ctx.fillStyle = gradient;
+                ctx.rect(0, 0, (0, _constants.CANVAS_WIDTH), (0, _constants.CANVAS_HEIGHT));
+                ctx.fill();
+            }
+        }
     }, [
         track.colors
     ]);
@@ -3093,7 +3097,7 @@ function Thermostat({ size =200 , min =0 , max =100 , value , handle: handleInpu
                 ref: _canvasRef
             }, void 0, false, {
                 fileName: "src/index.tsx",
-                lineNumber: 260,
+                lineNumber: 264,
                 columnNumber: 5
             }, this),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(Arc, {
@@ -3112,7 +3116,7 @@ function Thermostat({ size =200 , min =0 , max =100 , value , handle: handleInpu
                         size: size
                     }, void 0, false, {
                         fileName: "src/index.tsx",
-                        lineNumber: 266,
+                        lineNumber: 270,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("foreignObject", {
@@ -3134,12 +3138,12 @@ function Thermostat({ size =200 , min =0 , max =100 , value , handle: handleInpu
                             }
                         }, void 0, false, {
                             fileName: "src/index.tsx",
-                            lineNumber: 276,
+                            lineNumber: 280,
                             columnNumber: 9
                         }, this)
                     }, void 0, false, {
                         fileName: "src/index.tsx",
-                        lineNumber: 275,
+                        lineNumber: 279,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("mask", {
@@ -3149,12 +3153,12 @@ function Thermostat({ size =200 , min =0 , max =100 , value , handle: handleInpu
                             fill: "white"
                         }, void 0, false, {
                             fileName: "src/index.tsx",
-                            lineNumber: 287,
+                            lineNumber: 291,
                             columnNumber: 9
                         }, this)
                     }, void 0, false, {
                         fileName: "src/index.tsx",
-                        lineNumber: 286,
+                        lineNumber: 290,
                         columnNumber: 7
                     }, this),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("clipPath", {
@@ -3163,12 +3167,12 @@ function Thermostat({ size =200 , min =0 , max =100 , value , handle: handleInpu
                             d: arc
                         }, void 0, false, {
                             fileName: "src/index.tsx",
-                            lineNumber: 290,
+                            lineNumber: 294,
                             columnNumber: 9
                         }, this)
                     }, void 0, false, {
                         fileName: "src/index.tsx",
-                        lineNumber: 289,
+                        lineNumber: 293,
                         columnNumber: 7
                     }, this),
                     track.markers.enabled && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("g", {
@@ -3192,18 +3196,18 @@ function Thermostat({ size =200 , min =0 , max =100 , value , handle: handleInpu
                             size: size
                         }, void 0, false, {
                             fileName: "src/index.tsx",
-                            lineNumber: 293,
+                            lineNumber: 297,
                             columnNumber: 9
                         }, this)
                     }, void 0, false, {
                         fileName: "src/index.tsx",
-                        lineNumber: 292,
+                        lineNumber: 296,
                         columnNumber: 33
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "src/index.tsx",
-                lineNumber: 261,
+                lineNumber: 265,
                 columnNumber: 5
             }, this),
             !disabled && /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(HandleContainer, {
@@ -3225,18 +3229,18 @@ function Thermostat({ size =200 , min =0 , max =100 , value , handle: handleInpu
                     handleSize: handle.size
                 }, void 0, false, {
                     fileName: "src/index.tsx",
-                    lineNumber: 321,
+                    lineNumber: 325,
                     columnNumber: 7
                 }, this)
             }, void 0, false, {
                 fileName: "src/index.tsx",
-                lineNumber: 313,
+                lineNumber: 317,
                 columnNumber: 19
             }, this)
         ]
     }, void 0, true, {
         fileName: "src/index.tsx",
-        lineNumber: 259,
+        lineNumber: 263,
         columnNumber: 10
     }, this);
 }

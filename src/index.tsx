@@ -168,15 +168,19 @@ export function Thermostat({
 
   useEffect(() => {
     const canvasRef = _canvasRef.current;
-    const ctx = canvasRef.getContext('2d');
-    const gradient = ctx.createLinearGradient(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    track.colors?.forEach((color, index) => {
-      const offset = index === 0 ? 0.2 : index === track.colors.length - 1 ? 0.8 : (index / (track.colors.length - 1));
-      gradient.addColorStop(offset, color)
-    });
-    ctx.fillStyle = gradient;
-    ctx.rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-    ctx.fill();
+    if (canvasRef) {
+      const ctx = canvasRef.getContext('2d');
+      if (ctx) {
+        const gradient = ctx.createLinearGradient(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        track.colors?.forEach((color, index) => {
+          const offset = index === 0 ? 0.2 : index === track.colors.length - 1 ? 0.8 : (index / (track.colors.length - 1));
+          gradient.addColorStop(offset, color)
+        });
+        ctx.fillStyle = gradient;
+        ctx.rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        ctx.fill();
+      }
+    }
   }, [track.colors]);
 
   useEffect(() => {

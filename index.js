@@ -473,7 +473,6 @@ const $e68207026aca356b$var$HANDLE_DEFAULTS = {
     colors: (0, $4a368a512235c392$export$78486ed8e1ee431c)
 };
 const $e68207026aca356b$var$TRACK_DEFAULTS = {
-    thickness: 20,
     colors: [
         "#cfac48",
         "#cd5401"
@@ -497,6 +496,7 @@ function $e68207026aca356b$export$c1cbc01833f43ebe({ size: size = 200 , min: min
     };
     const track = {
         ...$e68207026aca356b$var$TRACK_DEFAULTS,
+        thickness: size / 10,
         ...trackInput || {},
         ...trackInput?.markers ? {
             ...$e68207026aca356b$var$TRACK_DEFAULTS.markers,
@@ -527,15 +527,19 @@ function $e68207026aca356b$export$c1cbc01833f43ebe({ size: size = 200 , min: min
     const controllable = !disabled && Boolean(onChange);
     (0, $66P0P$react.useEffect)(()=>{
         const canvasRef = _canvasRef.current;
-        const ctx = canvasRef.getContext("2d");
-        const gradient = ctx.createLinearGradient(0, 0, (0, $c122116bdd400350$export$2c9a6d1027132519), (0, $c122116bdd400350$export$aeb116877fd5ad06));
-        track.colors?.forEach((color, index)=>{
-            const offset = index === 0 ? 0.2 : index === track.colors.length - 1 ? 0.8 : index / (track.colors.length - 1);
-            gradient.addColorStop(offset, color);
-        });
-        ctx.fillStyle = gradient;
-        ctx.rect(0, 0, (0, $c122116bdd400350$export$2c9a6d1027132519), (0, $c122116bdd400350$export$aeb116877fd5ad06));
-        ctx.fill();
+        if (canvasRef) {
+            const ctx = canvasRef.getContext("2d");
+            if (ctx) {
+                const gradient = ctx.createLinearGradient(0, 0, (0, $c122116bdd400350$export$2c9a6d1027132519), (0, $c122116bdd400350$export$aeb116877fd5ad06));
+                track.colors?.forEach((color, index)=>{
+                    const offset = index === 0 ? 0.2 : index === track.colors.length - 1 ? 0.8 : index / (track.colors.length - 1);
+                    gradient.addColorStop(offset, color);
+                });
+                ctx.fillStyle = gradient;
+                ctx.rect(0, 0, (0, $c122116bdd400350$export$2c9a6d1027132519), (0, $c122116bdd400350$export$aeb116877fd5ad06));
+                ctx.fill();
+            }
+        }
     }, [
         track.colors
     ]);
