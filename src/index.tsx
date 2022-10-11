@@ -101,7 +101,6 @@ const HANDLE_DEFAULTS = {
   colors: DEFAULT_HANDLE_COLORS
 }
 const TRACK_DEFAULTS = {
-  thickness: 20,
   colors: ['#cfac48', '#cd5401'],
   markers: {
     enabled: true,
@@ -133,6 +132,7 @@ export function Thermostat({
   };
   const track = {
     ...TRACK_DEFAULTS,
+    thickness: size / 10,
     ...trackInput || {},
     ...trackInput?.markers ? {
       ...TRACK_DEFAULTS.markers,
