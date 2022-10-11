@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "NODE_ENV=production parcel build --no-source-maps ./index.html",
-    "start": "NODE_ENV=development parcel ./index.html"
+    "build": "NODE_ENV=production parcel build",
+    "start": "NODE_ENV=development parcel"
   },
+  "source": "index.html",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "targets": {
     "": {
       "publicUrl": "./"

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from '@emotion/styled';
+import merge from "ts-deepmerge";
 import {
   angleToPosition,
   positionToAngle,
@@ -126,27 +127,11 @@ export function Thermostat({
   onChange,
   disabled,
 }: Props) {
-  const handle = {
-    ...HANDLE_DEFAULTS,
-    ...handleInput
-  };
-  const track = {
+  const handle = merge(HANDLE_DEFAULTS, handleInput || {});
+  const track = merge({
     ...TRACK_DEFAULTS,
     thickness: size / 10,
-    ...trackInput || {},
-    ...trackInput?.markers ? {
-      ...TRACK_DEFAULTS.markers,
-      ...trackInput.markers,
-      main: {
-        ...TRACK_DEFAULTS.markers.main,
-        ...trackInput.markers.main || {},
-      },
-      sub: {
-        ...TRACK_DEFAULTS.markers.sub,
-        ...trackInput.markers.sub || {},
-      }
-    } : {}
-  };
+  }, trackInput || {});
   const _svgRef = useRef<SVGSVGElement>(null);
   const _handleRef = useRef<HTMLDivElement>(null)
   const _canvasRef = useRef<HTMLCanvasElement>(null);

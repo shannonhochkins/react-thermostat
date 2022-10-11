@@ -1,6 +1,5 @@
 import React from 'react';
-import { DeepPartial } from '../.d';
-
+import merge from "ts-deepmerge";
 interface Tick {
   thickness: number;
   length: number;
@@ -10,12 +9,12 @@ interface Tick {
 
 interface DialLinesProps {
   size: number;
-  mask: string | null;
-  ticks: {
-    count: number;
-    every: number;
-    main: Tick;
-    sub: Tick;
+  mask?: string | null;
+  ticks?: {
+    count?: number;
+    every?: number;
+    main?: Partial<Tick>;
+    sub?: Partial<Tick>;
   };
 }
 const TICK_DEFAULTS_MAIN: Tick = {
@@ -41,7 +40,7 @@ export function DialLines({
   size,
   mask = null,
   ticks = TICK_DEFAULTS,
-}: DeepPartial<DialLinesProps> & {
+}: DialLinesProps & {
   size: number;
 }) {
 
@@ -49,20 +48,9 @@ export function DialLines({
   const {
     count,
     every,
-    sub: subInput,
-    main: mainInput,
-  } = {
-    ...TICK_DEFAULTS,
-    ...ticks,
-  }
-  const main = {
-    ...TICK_DEFAULTS_MAIN,
-    ...mainInput
-  };
-  const sub = {
-    ...TICK_DEFAULTS_SUB,
-    ...subInput
-  }
+    sub,
+    main
+  } = merge(TICK_DEFAULTS, ticks);
   return (
     <g mask={mask ? `url(#${mask})` : undefined}>
       {
