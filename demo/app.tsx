@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import { css, Global } from '@emotion/react';
 import { createRoot } from 'react-dom/client';
-import Thermostat from '../index';
+import Thermostat from 'react-thermostat';
 import { WbSunny, AcUnit, LocalFireDepartment, PowerSettingsNew } from '@mui/icons-material';
 
 import "@fontsource/kanit/100.css";
