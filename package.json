@@ -8,16 +8,10 @@
     "type": "git"
   },
   "scripts": {
-    "build": "NODE_ENV=production parcel build --no-source-maps src/index.tsx",
-    "start": "NODE_ENV=development parcel demo/index.html"
+    "build": "NODE_ENV=production parcel build --no-source-maps src/index.tsx"
   },
   "author": "mail@shannonhochkins.com",
   "license": "ISC",
-  "targets": {
-    "": {
-      "publicUrl": "./"
-    }
-  },
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
