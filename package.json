@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "description": "A Controller to display temperature or use with a smart home integration like home assistant (react application talking to web sockets or rest api)",
   "main": "index.js",
+  "repository": {
+    "url": "https://github.com/shannonhochkins/react-thermostat",
+    "type": "git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "NODE_ENV=production parcel build --no-source-maps src/index.tsx",
     "start": "NODE_ENV=development parcel src/index.tsx"
   },
-  "author": "",
+  "author": "mail@shannonhochkins.com",
   "license": "ISC",
   "dependencies": {
     "@emotion/react": "^11.10.4",
