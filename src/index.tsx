@@ -311,4 +311,3 @@ export function Thermostat({
     </HandleContainer>}
   </Wrapper>
 }
-export default Thermostat;
