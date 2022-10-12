@@ -453,7 +453,6 @@ const $090815f5086f7f29$var$Arc = (0, $hWJAn$emotionstyled).svg`
   position: relative;
 `;
 const $090815f5086f7f29$var$HANDLE_DEFAULTS = {
-    size: 20,
     colors: (0, $0250fd3e5e408b4c$export$78486ed8e1ee431c)
 };
 const $090815f5086f7f29$var$TRACK_DEFAULTS = {
@@ -474,7 +473,10 @@ const $090815f5086f7f29$var$TRACK_DEFAULTS = {
     }
 };
 function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min = 0 , max: max = 100 , value: value , handle: handleInput , track: trackInput , onChange: onChange , disabled: disabled  }) {
-    const handle = (0, $hWJAn$tsdeepmerge)($090815f5086f7f29$var$HANDLE_DEFAULTS, handleInput || {});
+    const handle = (0, $hWJAn$tsdeepmerge)({
+        ...$090815f5086f7f29$var$HANDLE_DEFAULTS,
+        size: size / 10
+    }, handleInput || {});
     const track = (0, $hWJAn$tsdeepmerge)({
         ...$090815f5086f7f29$var$TRACK_DEFAULTS,
         thickness: size / 10
