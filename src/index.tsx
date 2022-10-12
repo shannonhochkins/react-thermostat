@@ -126,11 +126,15 @@ export function Thermostat({
   onChange,
   disabled,
 }: Props) {
-  const handle = merge({
+  const handle = merge.withOptions({
+    mergeArrays: false,
+  }, {
     ...HANDLE_DEFAULTS,
     size: size / 10
   }, handleInput || {});
-  const track = merge({
+  const track = merge.withOptions({
+    mergeArrays: false,
+  }, {
     ...TRACK_DEFAULTS,
     thickness: size / 10,
   }, trackInput || {});

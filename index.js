@@ -473,11 +473,15 @@ const $090815f5086f7f29$var$TRACK_DEFAULTS = {
     }
 };
 function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min = 0 , max: max = 100 , value: value , handle: handleInput , track: trackInput , onChange: onChange , disabled: disabled  }) {
-    const handle = (0, $hWJAn$tsdeepmerge)({
+    const handle = (0, $hWJAn$tsdeepmerge).withOptions({
+        mergeArrays: false
+    }, {
         ...$090815f5086f7f29$var$HANDLE_DEFAULTS,
         size: size / 10
     }, handleInput || {});
-    const track = (0, $hWJAn$tsdeepmerge)({
+    const track = (0, $hWJAn$tsdeepmerge).withOptions({
+        mergeArrays: false
+    }, {
         ...$090815f5086f7f29$var$TRACK_DEFAULTS,
         thickness: size / 10
     }, trackInput || {});
