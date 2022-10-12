@@ -178,7 +178,7 @@ function Root() {
           </Fab>
         </Actions>
         <Thermostat
-          size={size}
+          size={300}
           min={6}
           max={36}
           value={temp}

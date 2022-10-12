@@ -48,7 +48,7 @@ export default App;
 
 | prop   | type                           | required | default                        | description                |
 |--------|--------------------------------|----------|--------------------------------|----------------------------|
-| size   | number                         | no       | size / 10                      | The size of the handle     |
+| size   | number                         | no       | size / 15                      | The size of the handle     |
 | colors | [HandleColors](#handle-colors) | no       | [HandleColors](#handle-colors) | The colours for the handle |
 ## Handle Colors
 

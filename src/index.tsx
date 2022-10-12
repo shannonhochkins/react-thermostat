@@ -130,7 +130,7 @@ export function Thermostat({
     mergeArrays: false,
   }, {
     ...HANDLE_DEFAULTS,
-    size: size / 10
+    size: size / 15
   }, handleInput || {});
   const track = merge.withOptions({
     mergeArrays: false,

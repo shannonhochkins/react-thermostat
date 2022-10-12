@@ -477,7 +477,7 @@ function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min
         mergeArrays: false
     }, {
         ...$090815f5086f7f29$var$HANDLE_DEFAULTS,
-        size: size / 10
+        size: size / 15
     }, handleInput || {});
     const track = (0, $hWJAn$tsdeepmerge).withOptions({
         mergeArrays: false
