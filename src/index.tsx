@@ -87,11 +87,11 @@ interface TrackProps {
 }
 
 type Props = {
-  size: number;
-  min: number;
-  max: number;
+  size?: number;
+  min?: number;
+  max?: number;
   value: number;
-  onChange?: (value: number) => void;
+  onChange: (value: number) => void;
   handle?: HandleProps;
   disabled?: boolean;
   track?: TrackProps;
