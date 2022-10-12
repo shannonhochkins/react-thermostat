@@ -22,9 +22,6 @@ const App = () => {
     const [value, setValue] = useState(50);
     return (
         <Thermostat
-          min={0}
-          max={100}
-          size={300}
           value={value}
           onChange={ newValue => setValue(newValue) }
         />
