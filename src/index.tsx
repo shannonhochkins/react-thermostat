@@ -98,7 +98,6 @@ type Props = {
 };
 
 const HANDLE_DEFAULTS = {
-  size: 20,
   colors: DEFAULT_HANDLE_COLORS
 }
 const TRACK_DEFAULTS = {
@@ -127,7 +126,10 @@ export function Thermostat({
   onChange,
   disabled,
 }: Props) {
-  const handle = merge(HANDLE_DEFAULTS, handleInput || {});
+  const handle = merge({
+    ...HANDLE_DEFAULTS,
+    size: size / 10
+  }, handleInput || {});
   const track = merge({
     ...TRACK_DEFAULTS,
     thickness: size / 10,
