@@ -1,11 +1,6 @@
 import React, { useEffect, useState,  useRef } from 'react';
 import styled from '@emotion/styled';
-
-export interface HandleColors {
-  handle?: string;
-  icon?: string;
-  pulse?: string;
-}
+import { HandleColors } from './';
 
 export interface HandleProps {
   x: number;
@@ -55,8 +50,8 @@ export function Handle({
     ...DEFAULT_HANDLE_COLORS,
     ...colors,
   };
-  const ref = useRef(null);
-  const svgRef = useRef(null);
+  const ref = useRef<SVGRectElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const [angle, setAngle] = useState(0);
   const iconLineSpacing = handleSize / 3;
   const halfHandle = handleSize / 2;

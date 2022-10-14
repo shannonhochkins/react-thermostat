@@ -10,7 +10,7 @@ import {
 import { drawArc } from "./arc";
 import { DialLines } from './dialLines';
 import { Thermometer as ThermometerBase } from './thermometer';
-import { Handle, HandleColors, DEFAULT_HANDLE_COLORS } from './handle';
+import { Handle, DEFAULT_HANDLE_COLORS } from './handle';
 import { HEIGHT_MULTIPLIER, THICKNESS_DIVISOR, CANVAS_WIDTH, CANVAS_HEIGHT } from './constants';
 
 const Wrapper = styled.div`
@@ -61,7 +61,31 @@ const Arc = styled.svg`
   position: relative;
 `;
 
-interface HandleProps {
+const HANDLE_DEFAULTS = {
+  colors: DEFAULT_HANDLE_COLORS
+}
+const TRACK_DEFAULTS = {
+  colors: ['#cfac48', '#cd5401'],
+  markers: {
+    enabled: true,
+    every: 5,
+    count: 60,
+    main: {
+      color: 'black'
+    },
+    sub: {
+      color: 'rgba(0,0,0,0.8)'
+    }
+  }
+}
+
+export interface HandleColors {
+  handle?: string;
+  icon?: string;
+  pulse?: string;
+}
+
+export interface HandleProps {
   size?: number;
   colors?: HandleColors;
 }
@@ -86,7 +110,7 @@ interface TrackProps {
   }
 }
 
-type Props = {
+interface ThermostatProps {
   size?: number;
   min?: number;
   max?: number;
@@ -97,25 +121,6 @@ type Props = {
   track?: TrackProps;
 };
 
-const HANDLE_DEFAULTS = {
-  colors: DEFAULT_HANDLE_COLORS
-}
-const TRACK_DEFAULTS = {
-  colors: ['#cfac48', '#cd5401'],
-  markers: {
-    enabled: true,
-    every: 5,
-    count: 60,
-    main: {
-      color: 'black'
-    },
-    sub: {
-      color: 'rgba(0,0,0,0.8)'
-    }
-  }
-}
-
-
 export function Thermostat({
   size = 200,
   min = 0,
@@ -125,7 +130,7 @@ export function Thermostat({
   track: trackInput,
   onChange,
   disabled,
-}: Props) {
+}: ThermostatProps) {
   const handle = merge.withOptions({
     mergeArrays: false,
   }, {
@@ -213,10 +218,12 @@ export function Thermostat({
     if (canvasRef) {
       const ctx = canvasRef.getContext('2d');
       // input value percentage between min and max
-      const percent = ((value - min) * 100) / (max - min);
-      const scaling = (CANVAS_WIDTH - 1) * percent / 100;
-      const v = ctx.getImageData(scaling, 1, 1, 1).data; 
-      setColor(`rgb(${v[0]},${v[1]},${v[2]})`);
+      if (ctx) {
+        const percent = ((value - min) * 100) / (max - min);
+        const scaling = (CANVAS_WIDTH - 1) * percent / 100;
+        const v = ctx.getImageData(scaling, 1, 1, 1).data; 
+        setColor(`rgb(${v[0]},${v[1]},${v[2]})`);
+      }
     }
   }
 

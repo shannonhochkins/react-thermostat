@@ -550,10 +550,12 @@ function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min
         if (canvasRef) {
             const ctx = canvasRef.getContext("2d");
             // input value percentage between min and max
-            const percent = (value - min) * 100 / (max - min);
-            const scaling = ((0, $234747a9630b4642$export$2c9a6d1027132519) - 1) * percent / 100;
-            const v = ctx.getImageData(scaling, 1, 1, 1).data;
-            setColor(`rgb(${v[0]},${v[1]},${v[2]})`);
+            if (ctx) {
+                const percent = (value - min) * 100 / (max - min);
+                const scaling = ((0, $234747a9630b4642$export$2c9a6d1027132519) - 1) * percent / 100;
+                const v = ctx.getImageData(scaling, 1, 1, 1).data;
+                setColor(`rgb(${v[0]},${v[1]},${v[2]})`);
+            }
         }
     }
     function processSelection(ev) {
