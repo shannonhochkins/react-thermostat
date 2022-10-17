@@ -3,5 +3,5 @@ demo
 src
 .parcel-cache
 .nvmrc
-.tsconfig.json
+tsconfig.json
 .parcelrc
