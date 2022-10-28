@@ -1,6 +1,6 @@
 {
   "name": "react-thermostat",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "type": "module",
   "description": "A Controller to display temperature or use with a smart home integration like home assistant (react application talking to web sockets or rest api)",
   "keywords": [
@@ -53,6 +53,6 @@
     "@emotion/styled": "^11.10.5"
   },
   "peerDependencies": {
-    "react": ">=15.0.0"
+    "react": ">=16.8.0"
   }
 }
