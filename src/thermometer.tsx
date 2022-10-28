@@ -19,7 +19,7 @@ export function Thermometer({
   size,
   thickness = 20,
   className,
-  suffix = '°'
+  suffix
 }: ThermometerProps) {
   const height = size * HEIGHT_MULTIPLIER;
   const center = size / 2;
@@ -51,7 +51,7 @@ export function Thermometer({
     <text style={{
       userSelect: 'none'
     }} fontSize={innerCircleRadius} textAnchor="middle" x={center} y={height - circleSize} dominantBaseline="central" alignmentBaseline="central">
-      {value}{suffix}
+      {value}{typeof suffix !== 'undefined' ? suffix : '°'}
     </text>
     <g>
       <circle id="growing-thermo-cap" fill="currentColor" cx={center} cy={scaling} r={(circleSize - thickness * 4) / 2} />

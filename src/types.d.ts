@@ -36,6 +36,7 @@ declare module 'react-thermostat' {
     min?: number;
     max?: number;
     value: number;
+    valueSuffix: string;
     onChange: (value: number) => void;
     handle?: HandleProps;
     disabled?: boolean;
