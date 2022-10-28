@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from '@emotion/styled';
-import merge from "ts-deepmerge";
 import {
   angleToPosition,
   positionToAngle,
   valueToAngle,
   angleToValue,
+  merge,
 } from "./utils";
 import { drawArc } from "./arc";
 import { DialLines } from './dialLines';
@@ -134,15 +134,11 @@ export function Thermostat({
   onChange,
   disabled,
 }: ThermostatProps) {
-  const handle = merge.withOptions({
-    mergeArrays: false,
-  }, {
+  const handle = merge({
     ...HANDLE_DEFAULTS,
     size: size / 15
   }, handleInput || {});
-  const track = merge.withOptions({
-    mergeArrays: false,
-  }, {
+  const track = merge({
     ...TRACK_DEFAULTS,
     thickness: size / 10,
   }, trackInput || {});

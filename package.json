@@ -1,6 +1,6 @@
 {
   "name": "react-thermostat",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "type": "module",
   "description": "A Controller to display temperature or use with a smart home integration like home assistant (react application talking to web sockets or rest api)",
   "module": "index.js",
@@ -38,7 +38,6 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@fontsource/kanit": "^4.5.10",
-    "react": "^18.2.0",
-    "ts-deepmerge": "^4.0.0"
+    "react": "^18.2.0"
   }
 }

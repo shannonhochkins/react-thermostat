@@ -1,5 +1,5 @@
 import React from 'react';
-import merge from "ts-deepmerge";
+import { merge } from './utils';
 interface Tick {
   thickness: number;
   length: number;

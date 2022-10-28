@@ -1,8 +1,6 @@
 import {jsxs as $hWJAn$jsxs, jsx as $hWJAn$jsx} from "react/jsx-runtime";
 import {useRef as $hWJAn$useRef, useState as $hWJAn$useState, useEffect as $hWJAn$useEffect} from "react";
 import $hWJAn$emotionstyled from "@emotion/styled";
-import $hWJAn$tsdeepmerge from "ts-deepmerge";
-
 
 
 
@@ -74,6 +72,31 @@ function $fab42eb3dee39b5b$export$87e67ba629853261(position, svgSize) {
     const degree = theta / Math.PI * 180;
     return (270 + degree) % 360;
 }
+// istanbul ignore next
+const $fab42eb3dee39b5b$var$isObject = (obj)=>{
+    if (typeof obj === "object" && obj !== null) {
+        if (typeof Object.getPrototypeOf === "function") {
+            const prototype = Object.getPrototypeOf(obj);
+            return prototype === Object.prototype || prototype === null;
+        }
+        return Object.prototype.toString.call(obj) === "[object Object]";
+    }
+    return false;
+};
+const $fab42eb3dee39b5b$export$4950aa0f605343fb = (...objects)=>objects.reduce((result, current)=>{
+        if (Array.isArray(current)) throw new TypeError("Arguments provided to must be objects, not arrays.");
+        Object.keys(current).forEach((key)=>{
+            if ([
+                "__proto__",
+                "constructor",
+                "prototype"
+            ].includes(key)) return;
+            if (Array.isArray(result[key]) && Array.isArray(current[key])) result[key] = current[key];
+            else if ($fab42eb3dee39b5b$var$isObject(result[key]) && $fab42eb3dee39b5b$var$isObject(current[key])) result[key] = $fab42eb3dee39b5b$export$4950aa0f605343fb(result[key], current[key]);
+            else result[key] = current[key];
+        });
+        return result;
+    }, {});
 
 
 
@@ -139,7 +162,7 @@ const $ad8779185d5cf574$var$TICK_DEFAULTS = {
 };
 function $ad8779185d5cf574$export$38a233b5ad2f3b00({ size: size , mask: mask = null , ticks: ticks = $ad8779185d5cf574$var$TICK_DEFAULTS  }) {
     const radius = size / 2;
-    const { count: count , every: every , sub: sub , main: main  } = (0, $hWJAn$tsdeepmerge)($ad8779185d5cf574$var$TICK_DEFAULTS, ticks);
+    const { count: count , every: every , sub: sub , main: main  } = (0, $fab42eb3dee39b5b$export$4950aa0f605343fb)($ad8779185d5cf574$var$TICK_DEFAULTS, ticks);
     return /*#__PURE__*/ (0, $hWJAn$jsx)("g", {
         mask: mask ? `url(#${mask})` : undefined,
         children: Array(count).fill(undefined).map((u, i)=>{
@@ -474,15 +497,11 @@ const $090815f5086f7f29$var$TRACK_DEFAULTS = {
     }
 };
 function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min = 0 , max: max = 100 , value: value , valueSuffix: valueSuffix , handle: handleInput , track: trackInput , onChange: onChange , disabled: disabled  }) {
-    const handle = (0, $hWJAn$tsdeepmerge).withOptions({
-        mergeArrays: false
-    }, {
+    const handle = (0, $fab42eb3dee39b5b$export$4950aa0f605343fb)({
         ...$090815f5086f7f29$var$HANDLE_DEFAULTS,
         size: size / 15
     }, handleInput || {});
-    const track = (0, $hWJAn$tsdeepmerge).withOptions({
-        mergeArrays: false
-    }, {
+    const track = (0, $fab42eb3dee39b5b$export$4950aa0f605343fb)({
         ...$090815f5086f7f29$var$TRACK_DEFAULTS,
         thickness: size / 10
     }, trackInput || {});
