@@ -37,6 +37,6 @@ interface ThermostatProps {
     disabled?: boolean;
     track?: TrackProps;
 }
-export function Thermostat({ size, min, max, value, handle: handleInput, track: trackInput, onChange, disabled, }: ThermostatProps): JSX.Element;
+export function Thermostat({ size, min, max, value, valueSuffix, handle: handleInput, track: trackInput, onChange, disabled, }: ThermostatProps): JSX.Element;
 
 //# sourceMappingURL=types.d.ts.map

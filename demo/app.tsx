@@ -180,6 +180,7 @@ function Root() {
         <Thermostat
           size={300}
           min={6}
+          valueSuffix={'asdf'}
           max={36}
           value={temp}
           track={{

@@ -164,7 +164,7 @@ function $ad8779185d5cf574$export$38a233b5ad2f3b00({ size: size , mask: mask = n
 
 
 
-function $9bef96d565fcefc2$export$a72d32054f236c4({ min: min , max: max , value: value , size: size , thickness: thickness = 20 , className: className , suffix: suffix = "\xb0"  }) {
+function $9bef96d565fcefc2$export$a72d32054f236c4({ min: min , max: max , value: value , size: size , thickness: thickness = 20 , className: className , suffix: suffix  }) {
     const height = size * (0, $234747a9630b4642$export$57528c6c0bd59f75);
     const center = size / 2;
     // calculate the size of the main bottom circle based on the input size
@@ -262,7 +262,7 @@ function $9bef96d565fcefc2$export$a72d32054f236c4({ min: min , max: max , value:
                 alignmentBaseline: "central",
                 children: [
                     value,
-                    suffix
+                    typeof suffix !== "undefined" ? suffix : "\xb0"
                 ]
             }),
             /*#__PURE__*/ (0, $hWJAn$jsxs)("g", {
@@ -429,6 +429,7 @@ const $090815f5086f7f29$var$Wrapper = (0, $hWJAn$emotionstyled).div`
 const $090815f5086f7f29$var$ColorPicker = (0, $hWJAn$emotionstyled).canvas`
   position: absolute;
   z-index: -1;
+  visibility: hidden;
 `;
 const $090815f5086f7f29$var$HandleContainer = (0, $hWJAn$emotionstyled).div`
   position: absolute;
@@ -472,7 +473,7 @@ const $090815f5086f7f29$var$TRACK_DEFAULTS = {
         }
     }
 };
-function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min = 0 , max: max = 100 , value: value , handle: handleInput , track: trackInput , onChange: onChange , disabled: disabled  }) {
+function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min = 0 , max: max = 100 , value: value , valueSuffix: valueSuffix , handle: handleInput , track: trackInput , onChange: onChange , disabled: disabled  }) {
     const handle = (0, $hWJAn$tsdeepmerge).withOptions({
         mergeArrays: false
     }, {
@@ -602,6 +603,7 @@ function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min
                         value: Number(value.toFixed(0)),
                         min: min,
                         max: max,
+                        suffix: valueSuffix,
                         thickness: track.thickness / (0, $234747a9630b4642$export$306e165047789a05),
                         size: size
                     }),
