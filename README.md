@@ -39,16 +39,17 @@ export default App;
 
 ## Main Props
 
-| prop     | type                         | required | default                      | description                                                                                      |
-|----------|------------------------------|----------|------------------------------|--------------------------------------------------------------------------------------------------|
-| value    | number                       | yes      |                              | The value for the thermostat                                                                     |
-| onChange | (value: number) => void      | yes      |                              | Called when a user interacts with the handle, you should update your value with this callback.   |
-| min      | number                       | no       | 0                            | The minimum value for the thermostat                                                             |
-| max      | number                       | no       | 100                          | The maximum value for the thermostat                                                             |
-| size     | number                       | no       | 200                          | The size for the thermostat, this is more or less the width, the height is calculated from this. |
-| handle   | [HandleProps](#handle-props) | no       | [HandleProps](#handle-props) | The props for the dragging handle                                                                |
-| disabled | boolean                      | no       | false                        | If the thermostat should be disabled                                                             |
-| track    | [TrackProps](#track-props)   | no       | [TrackProps](#track-props)   | The props for the track                                                                          |
+| prop        | type                         | required | default                      | description                                                                                      |
+|-------------|------------------------------|----------|------------------------------|--------------------------------------------------------------------------------------------------|
+| value       | number                       | yes      |                              | The value for the thermostat                                                                     |
+| onChange    | (value: number) => void      | yes      |                              | Called when a user interacts with the handle, you should update your value with this callback.   |
+| valueSuffix | string                       | no       | °                            | The suffix for the value, use '' if you don't want a suffix                                      |
+| min         | number                       | no       | 0                            | The minimum value for the thermostat                                                             |
+| max         | number                       | no       | 100                          | The maximum value for the thermostat                                                             |
+| size        | number                       | no       | 200                          | The size for the thermostat, this is more or less the width, the height is calculated from this. |
+| handle      | [HandleProps](#handle-props) | no       | [HandleProps](#handle-props) | The props for the dragging handle                                                                |
+| disabled    | boolean                      | no       | false                        | If the thermostat should be disabled                                                             |
+| track       | [TrackProps](#track-props)   | no       | [TrackProps](#track-props)   | The props for the track                                                                          |
 
 
 ## Handle Props

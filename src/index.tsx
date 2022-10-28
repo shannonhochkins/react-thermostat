@@ -20,6 +20,7 @@ const Wrapper = styled.div`
 const ColorPicker = styled.canvas`
   position: absolute;
   z-index: -1;
+  visibility: hidden;
 `;
 
 interface HandleContainerProps {
@@ -115,6 +116,7 @@ interface ThermostatProps {
   min?: number;
   max?: number;
   value: number;
+  valueSuffix?: string;
   onChange: (value: number) => void;
   handle?: HandleProps;
   disabled?: boolean;
@@ -126,6 +128,7 @@ export function Thermostat({
   min = 0,
   max = 100,
   value,
+  valueSuffix,
   handle: handleInput,
   track: trackInput,
   onChange,
@@ -272,6 +275,7 @@ export function Thermostat({
         value={Number(value.toFixed(0))} 
         min={min}
         max={max}
+        suffix={valueSuffix}
         thickness={track.thickness / THICKNESS_DIVISOR}
         size={size} />
       <foreignObject x="0" y={height - size} width={size} height={size} clipPath="url(#clip)">
