@@ -1,6 +1,6 @@
 import {jsxs as $hWJAn$jsxs, jsx as $hWJAn$jsx} from "react/jsx-runtime";
 import {useRef as $hWJAn$useRef, useState as $hWJAn$useState, useEffect as $hWJAn$useEffect} from "react";
-import $hWJAn$emotionstyled from "@emotion/styled";
+import $hWJAn$emotionstyledbase from "@emotion/styled/base";
 
 
 
@@ -315,27 +315,18 @@ function $9bef96d565fcefc2$export$a72d32054f236c4({ min: min , max: max , value:
 
 
 
-const $0250fd3e5e408b4c$var$HandleBase = (0, $hWJAn$emotionstyled).circle``;
-const $0250fd3e5e408b4c$var$HandlePulse = (0, $hWJAn$emotionstyled).circle`
-  transform-box: fill-box;
-  transform-origin: center center;
-  animation-timing-function: ease-out;
-  animation-duration: 1500ms;
-  animation-iteration-count: infinite;
-  animation-name: pulse;
-  @keyframes pulse {
-    0% {
-      transform: scale(1.4);
-    }
-    50% {
-      transform: scale(0.8);
-    }
-    100% {
-      transform: scale(1.4);
-    }
-  }
-  
-`;
+function $0250fd3e5e408b4c$var$_EMOTION_STRINGIFIED_CSS_ERROR__() {
+    return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+}
+const $0250fd3e5e408b4c$var$HandleBase = /*#__PURE__*/ (0, $hWJAn$emotionstyledbase)("circle", {
+    target: "e1pg1usi1"
+})("");
+const $0250fd3e5e408b4c$var$HandlePulse = /*#__PURE__*/ (0, $hWJAn$emotionstyledbase)("circle", {
+    target: "e1pg1usi0"
+})({
+    name: "1r30l47",
+    styles: "transform-box:fill-box;transform-origin:center center;animation-timing-function:ease-out;animation-duration:1500ms;animation-iteration-count:infinite;animation-name:pulse;@keyframes pulse{0%{transform:scale(1.4);}50%{transform:scale(0.8);}100%{transform:scale(1.4);}}"
+});
 const $0250fd3e5e408b4c$export$78486ed8e1ee431c = {
     handle: "#fff",
     icon: "#111",
@@ -446,36 +437,36 @@ function $0250fd3e5e408b4c$export$94890c79f4cae6d6({ x: x = 0 , y: y = 0 , size:
 
 
 
-const $090815f5086f7f29$var$Wrapper = (0, $hWJAn$emotionstyled).div`
-  position: relative;
-`;
-const $090815f5086f7f29$var$ColorPicker = (0, $hWJAn$emotionstyled).canvas`
-  position: absolute;
-  z-index: -1;
-  visibility: hidden;
-`;
-const $090815f5086f7f29$var$HandleContainer = (0, $hWJAn$emotionstyled).div`
-  position: absolute;
-  z-index: 3;
-  bottom: 0;
-  left: 0;
-  width: ${(props)=>props.size}px;
-  height: ${(props)=>props.size}px;
-  margin-bottom: -${(props)=>props.handleSize - 3}px;
-  margin-left: -${(props)=>props.handleSize}px;
-`;
-const $090815f5086f7f29$var$Thermometer = (0, $hWJAn$emotionstyled)((0, $9bef96d565fcefc2$export$a72d32054f236c4))`
-  color: ${(props)=>props.color};
-  font-family: "Kanit", sans-serif;
-  font-weight: 100;
-`;
-const $090815f5086f7f29$var$Gradient = (0, $hWJAn$emotionstyled).div`
-  width: ${(props)=>props.width}px;
-  height: ${(props)=>props.height}px;
-`;
-const $090815f5086f7f29$var$Arc = (0, $hWJAn$emotionstyled).svg`
-  position: relative;
-`;
+function $090815f5086f7f29$var$_EMOTION_STRINGIFIED_CSS_ERROR__() {
+    return "You have tried to stringify object returned from `css` function. It isn't supposed to be used directly (e.g. as value of the `className` prop), but rather handed to emotion so it can handle it (e.g. as value of `css` prop).";
+}
+const $090815f5086f7f29$var$Wrapper = /*#__PURE__*/ (0, $hWJAn$emotionstyledbase)("div", {
+    target: "e1wqv6dx5"
+})({
+    name: "bjn8wh",
+    styles: "position:relative"
+});
+const $090815f5086f7f29$var$ColorPicker = /*#__PURE__*/ (0, $hWJAn$emotionstyledbase)("canvas", {
+    target: "e1wqv6dx4"
+})({
+    name: "ugxobr",
+    styles: "position:absolute;z-index:-1;visibility:hidden"
+});
+const $090815f5086f7f29$var$HandleContainer = /*#__PURE__*/ (0, $hWJAn$emotionstyledbase)("div", {
+    target: "e1wqv6dx3"
+})("position:absolute;z-index:3;bottom:0;left:0;width:", (props)=>props.size, "px;height:", (props)=>props.size, "px;margin-bottom:-", (props)=>props.handleSize - 3, "px;margin-left:-", (props)=>props.handleSize, "px;");
+const $090815f5086f7f29$var$Thermometer = /*#__PURE__*/ (0, $hWJAn$emotionstyledbase)((0, $9bef96d565fcefc2$export$a72d32054f236c4), {
+    target: "e1wqv6dx2"
+})("color:", (props)=>props.color, ';font-family:"Kanit",sans-serif;font-weight:100;');
+const $090815f5086f7f29$var$Gradient = /*#__PURE__*/ (0, $hWJAn$emotionstyledbase)("div", {
+    target: "e1wqv6dx1"
+})("width:", (props)=>props.width, "px;height:", (props)=>props.height, "px;");
+const $090815f5086f7f29$var$Arc = /*#__PURE__*/ (0, $hWJAn$emotionstyledbase)("svg", {
+    target: "e1wqv6dx0"
+})({
+    name: "bjn8wh",
+    styles: "position:relative"
+});
 const $090815f5086f7f29$var$HANDLE_DEFAULTS = {
     colors: (0, $0250fd3e5e408b4c$export$78486ed8e1ee431c)
 };
@@ -524,8 +515,9 @@ function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min
         if (canvasRef) {
             const ctx = canvasRef.getContext("2d");
             if (ctx) {
+                var _track$colors;
                 const gradient = ctx.createLinearGradient(0, 0, (0, $234747a9630b4642$export$2c9a6d1027132519), (0, $234747a9630b4642$export$aeb116877fd5ad06));
-                track.colors?.forEach((color, index)=>{
+                (_track$colors = track.colors) === null || _track$colors === void 0 || _track$colors.forEach((color, index)=>{
                     const offset = index === 0 ? 0.2 : index === track.colors.length - 1 ? 0.8 : index / (track.colors.length - 1);
                     gradient.addColorStop(offset, color);
                 });
