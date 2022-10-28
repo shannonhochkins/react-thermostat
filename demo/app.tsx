@@ -223,6 +223,7 @@ function Root() {
           size={300}
           min={6}
           max={36}
+          disabled={!on}
           value={temp}
           track={{
             colors
