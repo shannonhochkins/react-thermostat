@@ -256,7 +256,6 @@ export function Thermostat({
     innerRadius: trackInnerRadius,
     thickness: track.thickness,
     svgSize: size,
-    yOffset: height - size,
   });
   return <Wrapper>
     <ColorPicker width={CANVAS_WIDTH} height={CANVAS_HEIGHT} ref={_canvasRef}></ColorPicker>
@@ -275,25 +274,25 @@ export function Thermostat({
         suffix={valueSuffix}
         thickness={track.thickness / THICKNESS_DIVISOR}
         size={size} />
-      <foreignObject x="0" y={height - size} width={size} height={size} clipPath="url(#clip)">
-        <Gradient 
-          width={size}
-          height={size}
-          style={{
-            backgroundImage: `conic-gradient(from 0deg, ${[...track.colors || []].reverse().map((color, index) => {
-              const offset = index === 0 ? 20 : index === track.colors.length - 1 ? 80 : (index / (track.colors.length - 1)) * 100;
-              return `${color} ${offset}%`;
-            }).join(', ')}`
-          }} />
-      </foreignObject>
-      <mask id="arc-mask">
-        <path d={arc} fill="white" />
-      </mask>
-      <clipPath id="clip">
-        <path d={arc} />
-      </clipPath>
-      {track.markers.enabled && <g transform={`translate(0, ${height - size})`}>
-        <DialLines
+      <svg width={size} height={size} y={height - size}>
+        <foreignObject x={0} y={0} width={size} height={size} clipPath="url(#clip)">
+          <Gradient 
+            width={size}
+            height={size}
+            style={{
+              backgroundImage: `conic-gradient(from 0deg, ${[...track.colors || []].reverse().map((color, index) => {
+                const offset = index === 0 ? 20 : index === track.colors.length - 1 ? 80 : (index / (track.colors.length - 1)) * 100;
+                return `${color} ${offset}%`;
+              }).join(', ')}`
+            }} />
+        </foreignObject>
+          <mask id="arc-mask">
+            <path d={arc} fill="white" />
+          </mask>
+          <clipPath id="clip">
+            <path d={arc} />
+          </clipPath>
+        {track.markers.enabled && <DialLines
           ticks={{
             every: track.markers.every,
             count: track.markers.count,
@@ -310,8 +309,9 @@ export function Thermostat({
           }}
           mask="arc-mask"
           size={size}
-          />
-      </g>}
+          />}
+      </svg>
+      
     </Arc>
     {!disabled && <HandleContainer
       onMouseDown={onMouseDown}

@@ -7,14 +7,12 @@ interface ArcProps {
   innerRadius: number;
   thickness: number;
   svgSize: number;
-  yOffset: number;
 }
 
 export function drawArc({
   innerRadius,
   thickness,
   svgSize,
-  yOffset,
 }: ArcProps) {
   const largeArc = END_ANGLE - START_ANGLE >= 180;
   const outerRadius = innerRadius + thickness;
@@ -24,7 +22,7 @@ export function drawArc({
     svgSize
   );
   const startPoint = `
-    M ${innerArcStart.x},${innerArcStart.y + yOffset}
+    M ${innerArcStart.x},${innerArcStart.y}
   `;
   const innerArcEnd = angleToPosition(
     END_ANGLE,
@@ -35,7 +33,7 @@ export function drawArc({
     A ${innerRadius} ${innerRadius} 0
       ${largeArc ? "1" : "0"}
       0
-      ${innerArcEnd.x} ${innerArcEnd.y + yOffset}
+      ${innerArcEnd.x} ${innerArcEnd.y}
   `;
 
   const outerArcStart = angleToPosition(
@@ -47,7 +45,7 @@ export function drawArc({
     A ${thickness / 2} ${thickness / 2} 0
       ${largeArc ? "1" : "0"}
       1
-      ${outerArcStart.x} ${outerArcStart.y + yOffset}
+      ${outerArcStart.x} ${outerArcStart.y}
   `;
 
   const outerArcEnd = angleToPosition(
@@ -59,14 +57,14 @@ export function drawArc({
     A ${outerRadius} ${outerRadius} 0
       ${largeArc ? "1" : "0"}
       1
-      ${outerArcEnd.x} ${outerArcEnd.y + yOffset}
+      ${outerArcEnd.x} ${outerArcEnd.y}
   `;
 
   const secondButt = `
     A ${thickness / 2} ${thickness / 2} 0
       ${largeArc ? "1" : "0"}
       1
-      ${innerArcStart.x} ${innerArcStart.y + yOffset}
+      ${innerArcStart.x} ${innerArcStart.y}
   `;
 
   return startPoint + innerArc + firstButt + outerArc + secondButt + " Z";

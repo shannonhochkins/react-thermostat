@@ -4,15 +4,15 @@
 
 A react thermostat which can be easily plugged into any smart home application, I've used this with Home Assistant connecting to websockets for a standalone smart home application and it's working great.
 
-[Online Demo](https://shannonhochkins.github.io/react-thermostat/demo/dist/index.html)
+[Online Demo](https://shannonhochkins.github.io/react-thermostat/demo/index.html)
 
 ![](https://github.com/shannonhochkins/react-thermostat/blob/master/demo.gif)
 
-## Donate
+## Help me out?
 
 I've spent a lot of time on this, you're free to use it but would appreciate a small donation if you're feeling generous! Buy me a beer!
 
-[Buy me a coffee!](https://www.buymeacoffee.com/jinglezzz)
+[Buy me a beer!](https://www.buymeacoffee.com/jinglezzz)
 
 
 ## Install
@@ -87,3 +87,15 @@ export default App;
 | sub.color      | string  | no       | rgba(0,0,0,0.8)     | The colour of the sub mark                        |
 | sub.length     | number  | no       | track.thickness / 8 | The length of the sub mark                        |
 | sub.thickness  | number  | no       | 1                   | The thickness of the sub mark                     |
+
+
+## Developer
+
+Once the repository has been checked out, simply run `npm run dev` which will spawn a local webserver.
+
+Any changes made in the src direction will appear in the demo page created.
+
+
+## Publishing
+
+This is a very simple package setup, no tagging in place for now, increment the package version, `npm run build` and push all your changes then run `npm publish`
