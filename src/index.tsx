@@ -256,6 +256,7 @@ export function Thermostat({
     innerRadius: trackInnerRadius,
     thickness: track.thickness,
     svgSize: size,
+    yOffset: height - size,
   });
   return <Wrapper>
     <ColorPicker width={CANVAS_WIDTH} height={CANVAS_HEIGHT} ref={_canvasRef}></ColorPicker>

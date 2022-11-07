@@ -101,39 +101,39 @@ const $fab42eb3dee39b5b$export$4950aa0f605343fb = (...objects)=>objects.reduce((
 
 
 
-function $02383ca2bfd5c669$export$bf8a3f9983094125({ innerRadius: innerRadius , thickness: thickness , svgSize: svgSize  }) {
+function $02383ca2bfd5c669$export$bf8a3f9983094125({ innerRadius: innerRadius , thickness: thickness , svgSize: svgSize , yOffset: yOffset  }) {
     const largeArc = (0, $234747a9630b4642$export$852bdfb103a2bad0) - (0, $234747a9630b4642$export$1fefafa9d19cfa77) >= 180;
     const outerRadius = innerRadius + thickness;
     const innerArcStart = (0, $fab42eb3dee39b5b$export$2d72ec1166563834)((0, $234747a9630b4642$export$1fefafa9d19cfa77), innerRadius, svgSize);
     const startPoint = `
-    M ${innerArcStart.x},${innerArcStart.y}
+    M ${innerArcStart.x},${innerArcStart.y + yOffset}
   `;
     const innerArcEnd = (0, $fab42eb3dee39b5b$export$2d72ec1166563834)((0, $234747a9630b4642$export$852bdfb103a2bad0), innerRadius, svgSize);
     const innerArc = `
     A ${innerRadius} ${innerRadius} 0
       ${largeArc ? "1" : "0"}
       0
-      ${innerArcEnd.x} ${innerArcEnd.y}
+      ${innerArcEnd.x} ${innerArcEnd.y + yOffset}
   `;
     const outerArcStart = (0, $fab42eb3dee39b5b$export$2d72ec1166563834)((0, $234747a9630b4642$export$852bdfb103a2bad0), outerRadius, svgSize);
     const firstButt = `
     A ${thickness / 2} ${thickness / 2} 0
       ${largeArc ? "1" : "0"}
       1
-      ${outerArcStart.x} ${outerArcStart.y}
+      ${outerArcStart.x} ${outerArcStart.y + yOffset}
   `;
     const outerArcEnd = (0, $fab42eb3dee39b5b$export$2d72ec1166563834)((0, $234747a9630b4642$export$1fefafa9d19cfa77), outerRadius, svgSize);
     const outerArc = `
     A ${outerRadius} ${outerRadius} 0
       ${largeArc ? "1" : "0"}
       1
-      ${outerArcEnd.x} ${outerArcEnd.y}
+      ${outerArcEnd.x} ${outerArcEnd.y + yOffset}
   `;
     const secondButt = `
     A ${thickness / 2} ${thickness / 2} 0
       ${largeArc ? "1" : "0"}
       1
-      ${innerArcStart.x} ${innerArcStart.y}
+      ${innerArcStart.x} ${innerArcStart.y + yOffset}
   `;
     return startPoint + innerArc + firstButt + outerArc + secondButt + " Z";
 }
@@ -593,7 +593,8 @@ function $090815f5086f7f29$export$c1cbc01833f43ebe({ size: size = 200 , min: min
     const arc = (0, $02383ca2bfd5c669$export$bf8a3f9983094125)({
         innerRadius: trackInnerRadius,
         thickness: track.thickness,
-        svgSize: size
+        svgSize: size,
+        yOffset: height - size
     });
     return /*#__PURE__*/ (0, $hWJAn$jsxs)($090815f5086f7f29$var$Wrapper, {
         children: [
