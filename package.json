@@ -1,6 +1,6 @@
 {
   "name": "react-thermostat",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "A Controller to display temperature or use with a smart home integration like home assistant (react application talking to web sockets or rest api)",
   "keywords": [
     "react",
@@ -14,17 +14,20 @@
     "input",
     "svg"
   ],
-  "module": "index.js",
-  "types": "types.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
   "targets": {
     "demo": {
-      "source": "src/demo/index.html",
-      "distDir": "./demo",
-      "publicUrl": "./"
+      "source": "./src/demo/index.html",
+      "publicUrl": "./",
+      "distDir": "./demo-dist",
+      "isLibrary": false
     },
     "package": {
-      "source": "src/index.tsx",
-      "distDir": "."
+      "source": "./src/index.tsx",
+      "distDir": "./dist",
+      "isLibrary": true
     }
   },
   "repository": {
@@ -39,8 +42,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "rm -rf demo && npm run check && parcel build --target package --target demo",
-    "dev": "parcel --target demo",
+    "build": "rm -rf demo-dist dist && parcel build --target=package --target=demo",
+    "dev": "parcel --target=demo",
     "check": "tsc --noEmit"
   },
   "author": "mail@shannonhochkins.com",
