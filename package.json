@@ -1,6 +1,6 @@
 {
   "name": "react-thermostat",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "A Controller to display temperature or use with a smart home integration like home assistant (react application talking to web sockets or rest api)",
   "keywords": [
     "react",
@@ -23,11 +23,6 @@
       "publicUrl": "./",
       "distDir": "./demo-dist",
       "isLibrary": false
-    },
-    "package": {
-      "source": "./src/index.tsx",
-      "distDir": "./dist",
-      "isLibrary": true
     }
   },
   "repository": {
@@ -42,7 +37,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "rm -rf demo-dist dist && parcel build --target=package --target=demo",
+    "build": "rm -rf demo-dist dist && parcel build src/index.tsx --dist-dir=dist && parcel build --target demo",
     "dev": "parcel --target=demo",
     "check": "tsc --noEmit"
   },
