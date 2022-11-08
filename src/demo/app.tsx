@@ -235,11 +235,10 @@ function Root() {
         <Fab style={{
           marginTop: 20
         }} size="large" active={on} activeColor={'#cfac48'} onClick={() => {
-          setState('off');
-          setColors(offColors);
+          setState(state === 'off' ? 'heat' : 'off');
+          setColors(state === 'off' ? heatColors : offColors);
         }}>
           <PowerSettingsNew />
-          
         </Fab>
       </Container>
     </Area>
