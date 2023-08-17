@@ -6,8 +6,9 @@ const { EsLinter, linterPlugin } = EsLint;
 // https://vitejs.dev/config/
 export default defineConfig(configEnv => {
   return {
+    base: '',
     build: {
-      outDir: 'demo-dist'
+      outDir: 'demo-dist',
     },
     plugins: [
       react({
