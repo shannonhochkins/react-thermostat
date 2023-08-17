@@ -12,7 +12,6 @@ import { DialLines } from './dialLines';
 import { Thermometer as ThermometerBase } from './thermometer';
 import { Handle, DEFAULT_HANDLE_COLORS } from './handle';
 import { HEIGHT_MULTIPLIER, THICKNESS_DIVISOR, CANVAS_WIDTH, CANVAS_HEIGHT } from './constants';
-import "@fontsource/roboto/300.css";
 
 const Wrapper = styled.div<{
   ready: boolean;
@@ -39,7 +38,7 @@ const HandleContainer = styled.div`
 
 
 const Thermometer = styled(ThermometerBase)`
-  font-family: "Roboto", sans-serif;
+  font-family: sans-serif;
   font-weight: 300;
 `;
 

@@ -1,4 +1,4 @@
-v1.0.24
+v2.0.0
 - Swapping to use @use-gesture/react instead of standard events.
 - Adding animations and transitions with colors, handle is now animated
 - introducing useCallback and useMemo for performance

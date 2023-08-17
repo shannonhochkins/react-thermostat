@@ -4,7 +4,6 @@ import { css, Global, keyframes } from '@emotion/react';
 import { createRoot } from 'react-dom/client';
 import { Thermostat } from '..';
 import { Icon } from '@iconify/react';
-import "@fontsource/roboto/300.css";
 
 const spin = keyframes`
   from {
@@ -155,7 +154,7 @@ function Root() {
           width: 100%;
           margin: 0;
           padding: 0;
-          font-family: "Roboto";
+          font-family: sans-serif;
           font-weight: 300;
           overflow: hidden;
         }

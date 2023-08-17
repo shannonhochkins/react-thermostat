@@ -51,7 +51,6 @@ function DialLinesComponent({
     sub,
     main
   } = merge(TICK_DEFAULTS, ticks);
-  console.log('re-rendering dial')
   return (
     <g mask={mask ? `url(#${mask})` : undefined}>
       {
