@@ -12,6 +12,7 @@ A react thermostat which can be easily plugged into any smart home application, 
 
 I've spent a lot of time on this, you're free to use it but would appreciate a small donation if you're feeling generous! Buy me a beer!
 
+
 [Buy me a beer!](https://www.buymeacoffee.com/jinglezzz)
 
 
@@ -21,17 +22,26 @@ I've spent a lot of time on this, you're free to use it but would appreciate a s
   npm i react-thermostat
 ```
 ## Example
+The size of the thermostat is relative to it's parent and automatically will adjust on resize, you can also set the size of the thermostat by setting the width of the parent container.
+
 
 ```javascript
 import React, { useState } from 'react';
+import styled from '@emotion/styled';
 import { Thermostat } from 'react-thermostat';
+const Container = styled.div`
+  width: 100%;
+  max-width: 300px;
+`;
 const App = () => {
     const [value, setValue] = useState(50);
     return (
+      <Container>
         <Thermostat
           value={value}
-          onChange={ newValue => setValue(newValue) }
+          onChange={ newValue => setValue(Number(newValue.toFixed(0))) }
         />
+      </Container>
     )
 };
 export default App;
@@ -42,11 +52,10 @@ export default App;
 | prop        | type                         | required | default                      | description                                                                                      |
 |-------------|------------------------------|----------|------------------------------|--------------------------------------------------------------------------------------------------|
 | value       | number                       | yes      |                              | The value for the thermostat                                                                     |
-| onChange    | (value: number) => void      | yes      |                              | Called when a user interacts with the handle, you should update your value with this callback.   |
+| onChange    | (value: number) => void      | yes      |                              | Called when a user interacts with the handle, you should update your value with this callback, this value is NOT rounded intentionally.   |
 | valueSuffix | string                       | no       | °                            | The suffix for the value, use '' if you don't want a suffix                                      |
 | min         | number                       | no       | 0                            | The minimum value for the thermostat                                                             |
 | max         | number                       | no       | 100                          | The maximum value for the thermostat                                                             |
-| size        | number                       | no       | 200                          | The size for the thermostat, this is more or less the width, the height is calculated from this. |
 | handle      | [HandleProps](#handle-props) | no       | [HandleProps](#handle-props) | The props for the dragging handle                                                                |
 | disabled    | boolean                      | no       | false                        | If the thermostat should be disabled                                                             |
 | track       | [TrackProps](#track-props)   | no       | [TrackProps](#track-props)   | The props for the track                                                                          |
