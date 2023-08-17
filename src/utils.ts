@@ -1,32 +1,44 @@
-import { START_ANGLE, END_ANGLE } from "./constants";
-
-
-export function angleToValue(params: {
-  angle: number;
-  min: number;
-  max: number;
-}) {
-  const { angle, min, max } = params;
-  if (angle < START_ANGLE) {
-    return min;
-  } else if (angle > END_ANGLE) {
-    return max;
-  } else {
-    const ratio = (angle - START_ANGLE) / (END_ANGLE - START_ANGLE);
-    const value = ratio * (max - min) + min;
-    return value;
-  }
+import { MIN_ROTATION, MAX_ROTATION } from "./constants";
+function calculateLinearCoefficients(minValue: number, maxValue: number) {
+  // Normalize maxRotation to -230 if it's 130
+  const normalizedMaxRotation = MAX_ROTATION - 360;
+  // Calculate the slope
+  const m = (maxValue - minValue) / (normalizedMaxRotation - MIN_ROTATION);
+  // Calculate the intercept
+  const b = minValue - m * MIN_ROTATION;
+  return { m, b };
 }
 
 export function valueToAngle(params: {
   value: number;
   min: number;
   max: number;
-}) {
+}): number {
   const { value, min, max } = params;
-  const ratio = (value - min) / (max - min);
-  const angle = ratio * (END_ANGLE - START_ANGLE) + START_ANGLE;
-  return angle;
+  // Constants for the linear relationship
+  const { m, b } = calculateLinearCoefficients(min, max);
+  // Calculate the angle using the linear equation
+  const angle = (value - b) / m;
+  // Normalize the angle, considering 130 degrees as -230 degrees
+  const normalizedAngle = angle < MAX_ROTATION ? angle : angle + 360;
+  // Return the calculated angle
+  return normalizedAngle;
+}
+
+export function angleToValue(params: {
+  min: number;
+  max: number;
+  angle: number;
+}): number {
+  const { min, max, angle } = params;
+  // Constants for the linear relationship
+  const { m, b } = calculateLinearCoefficients(min, max);
+  // Normalize the angle, considering 130 degrees as -230 degrees
+  const normalizedAngle = angle < MAX_ROTATION ? angle : angle - 360;
+  // Calculate the value using the linear equation
+  const value = m * normalizedAngle + b;
+  // clamp the values
+  return Math.max(min, Math.min(max, value));
 }
 
 export function angleToPosition(
@@ -66,21 +78,26 @@ export function angleToPosition(
   return { x, y };
 }
 
-export function positionToAngle(
-  position: { x: number; y: number },
-  svgSize: number,
-) {
-  const dX = position.x - svgSize / 2;
-  // position.y increases downwards in svg
-  const dY = svgSize / 2 - position.y; 
-  // radians, counterclockwise from positive x axis
-  let theta = Math.atan2(dY, dX); 
-  if (theta < 0) {
-    theta = theta + 2 * Math.PI;
+export function positionToAngle(x: number, y: number, div: HTMLDivElement): number {
+  const containerBounding = div.getBoundingClientRect();
+  const centerX = containerBounding.left + containerBounding.width / 2;
+  const centerY = containerBounding.top + containerBounding.height / 2;
+
+  // Calculate angle between center of container and current drag coordinates
+  var angleRad = Math.atan2(centerY - y, centerX - x);
+  
+  // Convert angle from radians to degrees
+  var angleDeg = Math.round((angleRad * 180) / Math.PI);
+  const minAngle = MIN_ROTATION;
+  const maxAngle = MAX_ROTATION;
+  // Normalize the angle, considering 130 degrees as -230 degrees
+  if (angleDeg > maxAngle) {
+    angleDeg -= 360;
   }
-  // degrees, counterclockwise from positive x axis
-  const degree = (theta / Math.PI) * 180; 
-  return (270 + degree) % 360;
+  if (angleDeg > minAngle && angleDeg < maxAngle) {
+    angleDeg = Math.round(angleDeg <= (minAngle + maxAngle) / 2 ? minAngle : maxAngle); // Clamp to the closest bound
+  }
+  return angleDeg;
 }
 
 

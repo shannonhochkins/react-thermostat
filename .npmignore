@@ -1,8 +1,5 @@
 demo.gif
 demo-dist
 src
-.parcel-cache
 .nvmrc
 tsconfig.json
-.parcelrc
-.babelrc

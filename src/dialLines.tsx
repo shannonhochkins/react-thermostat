@@ -1,4 +1,3 @@
-import React from 'react';
 import { merge } from './utils';
 interface Tick {
   thickness: number;
@@ -7,7 +6,7 @@ interface Tick {
   cap: 'round' | 'butt' | 'square'
 }
 
-interface DialLinesProps {
+export interface DialLinesProps {
   size: number;
   mask?: string | null;
   ticks?: {
@@ -54,7 +53,7 @@ export function DialLines({
   return (
     <g mask={mask ? `url(#${mask})` : undefined}>
       {
-        Array(count).fill(undefined).map((u, i) => {
+        Array(count).fill(undefined).map((_, i) => {
           const cos = Math.cos(2 * Math.PI / count * i);
           const sin = Math.sin(2 * Math.PI / count * i);
           const isMain = i % every === 0;

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo, useCallback, useLayoutEffect } from "react";
 import styled from '@emotion/styled';
+import { useGesture } from '@use-gesture/react';
 import {
-  angleToPosition,
   positionToAngle,
   valueToAngle,
   angleToValue,
@@ -12,6 +12,7 @@ import { DialLines } from './dialLines';
 import { Thermometer as ThermometerBase } from './thermometer';
 import { Handle, DEFAULT_HANDLE_COLORS } from './handle';
 import { HEIGHT_MULTIPLIER, THICKNESS_DIVISOR, CANVAS_WIDTH, CANVAS_HEIGHT } from './constants';
+import "@fontsource/roboto/300.css";
 
 const Wrapper = styled.div`
   position: relative;
@@ -23,20 +24,12 @@ const ColorPicker = styled.canvas`
   visibility: hidden;
 `;
 
-interface HandleContainerProps {
-  size: number;
-  handleSize: number;
-}
-
-const HandleContainer = styled.div<HandleContainerProps>`
+const HandleContainer = styled.div`
   position: absolute;
   z-index: 3;
-  bottom: 0;
-  left: 0;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  margin-bottom: -${props => props.handleSize -3}px;
-  margin-left: -${props => props.handleSize}px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
 `;
 
 
@@ -45,17 +38,24 @@ const Thermometer = styled(ThermometerBase)<{
   handleSize: number;
 }>`
   color: ${props => props.color};
-  font-family: "Kanit", sans-serif;
-  font-weight: 100;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
 `;
 
 interface GradientProps {
   width: number;
   height: number;
+  trackColors: string[];
 }
 const Gradient = styled.div<GradientProps>`
   width: ${props => props.width}px;
   height: ${props => props.height}px;
+  ${props => {
+    const transition = [...props.trackColors].map((_, index) => `--thermostat-color-${index} 0.3s ease`).join(', ')
+    return `
+      transition: ${transition};
+    `;
+  }}
 `;
 
 const Arc = styled.svg`
@@ -91,7 +91,7 @@ export interface HandleProps {
   colors?: HandleColors;
 }
 
-interface TrackProps {
+export interface TrackProps {
   colors?: string[];
   thickness?: number;
   markers?: {
@@ -111,8 +111,7 @@ interface TrackProps {
   }
 }
 
-interface ThermostatProps {
-  size?: number;
+export interface ThermostatProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   min?: number;
   max?: number;
   value: number;
@@ -124,7 +123,6 @@ interface ThermostatProps {
 };
 
 export function Thermostat({
-  size = 200,
   min = 0,
   max = 100,
   value,
@@ -133,7 +131,29 @@ export function Thermostat({
   track: trackInput,
   onChange,
   disabled,
+  ...rest
 }: ThermostatProps) {
+  const [size, setSize] = useState(0);
+  const updateSize = useCallback(() => {
+    if (_parentRef.current) {
+      const parentElement = _parentRef.current.parentElement;
+      if (parentElement) {
+        setSize(parentElement.clientWidth);
+      }
+    }
+  }, []);
+
+  useLayoutEffect(() => {
+    updateSize();
+    if (!_parentRef.current || !_parentRef.current.parentElement) return;
+    const resizeObserver = new ResizeObserver(updateSize);
+    resizeObserver.observe(_parentRef.current.parentElement);
+    // Clean up the observer on unmount
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
+
   const handle = merge({
     ...HANDLE_DEFAULTS,
     size: size / 15
@@ -142,123 +162,142 @@ export function Thermostat({
     ...TRACK_DEFAULTS,
     thickness: size / 10,
   }, trackInput || {});
+  const _containerRef = useRef<HTMLDivElement>(null);
   const _svgRef = useRef<SVGSVGElement>(null);
-  const _handleRef = useRef<HTMLDivElement>(null)
+  const _parentRef = React.useRef<HTMLDivElement>(null);
+  const _styleRef = useRef<HTMLStyleElement>(null)
   const _canvasRef = useRef<HTMLCanvasElement>(null);
   const [color, setColor] = useState('transparent');
+  const _ctx = useRef<CanvasRenderingContext2D | null>(null);
   const trackInnerRadius = size / 2 - track.thickness;
   const thermoOffset = (track.thickness + (track.thickness / THICKNESS_DIVISOR));
   const height = size * HEIGHT_MULTIPLIER + thermoOffset;
-  const handleAngle = valueToAngle({
+  const handleAngle = useMemo(() => valueToAngle({
     value,
     min,
     max,
-  });
-  const handlePosition = angleToPosition(
-    handleAngle,
-    trackInnerRadius + track.thickness / 2,
-    size
-  );
-  const controllable = !disabled && Boolean(onChange);
+  }), [value, min, max]);
+
 
   useEffect(() => {
     const canvasRef = _canvasRef.current;
     if (canvasRef) {
-      const ctx = canvasRef.getContext('2d');
-      if (ctx) {
-        const gradient = ctx.createLinearGradient(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      if (!_ctx.current) {
+        _ctx.current = canvasRef.getContext('2d', { willReadFrequently: true });
+      }
+      if (_ctx.current) {
+        const gradient = _ctx.current.createLinearGradient(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
         track.colors?.forEach((color, index) => {
           const offset = index === 0 ? 0.2 : index === track.colors.length - 1 ? 0.8 : (index / (track.colors.length - 1));
           gradient.addColorStop(offset, color)
         });
-        ctx.fillStyle = gradient;
-        ctx.rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-        ctx.fill();
+        _ctx.current.fillStyle = gradient;
+        _ctx.current.rect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+        _ctx.current.fill();
       }
+    }
+    if (_styleRef.current) {
+      const values = track.colors?.map((color, index) => {
+         return `
+          @property --thermostat-color-${index} {
+            syntax: '<color>';
+            initial-value: ${color};
+            inherits: false;
+          }
+         `;
+      });
+      _styleRef.current.innerHTML = `
+        ${values.join('\n')}
+      `;
     }
   }, [track.colors]);
 
   useEffect(() => {
-    getColourFromValue();
+    const canvasRef = _canvasRef.current;
+    // extract the colour from the hidden canvas
+    if (canvasRef) {
+      if (!_ctx.current) {
+        _ctx.current = canvasRef.getContext('2d', { willReadFrequently: true });
+      }
+      // input value percentage between min and max
+      if (_ctx.current) {
+        const percent = ((value - min) * 100) / (max - min);
+        const scaling = (CANVAS_WIDTH - 1) * percent / 100;
+        const v = _ctx.current.getImageData(scaling, 1, 1, 1).data; 
+        setColor(`rgb(${v[0]},${v[1]},${v[2]})`);
+      }
+    }
   }, [value, track.colors]);
 
   if (value < min || value > max) {
     throw new Error(`"value" should be between ${min} and ${max}`);
   }
 
-  function onMouseEnter(ev: React.MouseEvent<HTMLDivElement>) {
-    if (ev.buttons === 1) {
-      // The left mouse button is pressed, act as though user clicked us
-      onMouseDown(ev);
-    }
-  };
-
-  function onMouseDown(ev: React.MouseEvent<HTMLDivElement>) {
-    const handleRef = _handleRef.current;
-    if (handleRef) {
-      handleRef.addEventListener("mousemove", processSelection);
-      handleRef.addEventListener("mouseleave", removeMouseListeners);
-      handleRef.addEventListener("mouseup", removeMouseListeners);
-    }
-    processSelection(ev);
-  };
-
-  function removeMouseListeners() {
-    const handleRef = _handleRef.current;
-    if (handleRef) {
-      handleRef.removeEventListener("mousemove", processSelection);
-      handleRef.removeEventListener("mouseleave", removeMouseListeners);
-      handleRef.removeEventListener("mouseup", removeMouseListeners);
-    }
-  };
-
-  function getColourFromValue() {
-    const canvasRef = _canvasRef.current;
-    if (canvasRef) {
-      const ctx = canvasRef.getContext('2d');
-      // input value percentage between min and max
-      if (ctx) {
-        const percent = ((value - min) * 100) / (max - min);
-        const scaling = (CANVAS_WIDTH - 1) * percent / 100;
-        const v = ctx.getImageData(scaling, 1, 1, 1).data; 
-        setColor(`rgb(${v[0]},${v[1]},${v[2]})`);
-      }
-    }
-  }
-
-  function processSelection(ev: React.MouseEvent<HTMLDivElement> | MouseEvent) {
-    if (!onChange || disabled) {
-      // Read-only, don't bother doing calculations
-      return;
-    }
-    const svgRef = _svgRef.current;
-    if (!svgRef) {
-      return;
-    }
-    // Find the coordinates with respect to the SVG
-    const svgPoint = svgRef.createSVGPoint();
-    const x = ev.clientX;
-    const y = ev.clientY;
-    svgPoint.x = x;
-    // offset the Y by the size of the thermometer difference
-    svgPoint.y = y - (height - size);
-    const coordsInSvg = svgPoint.matrixTransform(
-      svgRef.getScreenCTM()!.inverse()
-    );
-    const angle = positionToAngle(coordsInSvg, size);
-    onChange(angleToValue({
-      angle,
-      min,
-      max,
-    }));
-  };
-  const arc = drawArc({
+  const arc = useMemo(() => drawArc({
     innerRadius: trackInnerRadius,
     thickness: track.thickness,
     svgSize: size,
-  });
-  return <Wrapper>
+  }), [trackInnerRadius, size, track.thickness]);
+
+  const calculateValues = useCallback((x: number, y: number) => {
+    if (!_containerRef.current) return;
+    const angle = positionToAngle(x, y, _containerRef.current);
+    const value = angleToValue({
+      angle,
+      min,
+      max,
+    });
+    _containerRef.current.style.transform = `rotate(${angle}deg)`;
+    onChange(value);
+  }, [onChange]);
+
+  const bind = useGesture(
+    {
+      onDrag: (state) => {
+        if (!_containerRef.current || disabled) return;
+        _containerRef.current.style.transition = state.dragging ? 'none' : 'transform 0.3s ease';
+        calculateValues(...state.xy);
+      },
+      onDragStart: () => {
+        if (!_containerRef.current || disabled) return;
+        _containerRef.current.style.transition = 'none';
+      },
+      onDragEnd: (state) => {
+        if (disabled || !_containerRef.current) return;
+        _containerRef.current.style.transition = 'transform 0.3s ease';
+        calculateValues(...state.xy);
+      },
+      onClick: (state) => {
+        if (disabled || !_containerRef.current) return;
+        _containerRef.current.style.transition = 'transform 0.3s ease';
+        calculateValues(state.event.clientX, state.event.clientY);
+      },
+    },
+    {
+      drag: {
+        filterTaps: true,
+        pointer: {
+          touch: true,
+          mouse: true,
+        }
+      },
+    }
+  );
+
+  return <Wrapper ref={_parentRef} {...rest}>
+    <style ref={_styleRef}></style>
     <ColorPicker width={CANVAS_WIDTH} height={CANVAS_HEIGHT} ref={_canvasRef}></ColorPicker>
+    {!disabled && <HandleContainer
+      {...bind()}
+      ref={_containerRef}
+      style={{
+        width: size,
+        height: size,
+        top: height - size,
+        transform: `rotate(${handleAngle}deg)`,
+      }}>
+      <Handle trackThickness={track.thickness} colors={handle.colors} size={size} handleSize={handle.size} />
+    </HandleContainer>}
     <Arc
       width={size}
       height={height}
@@ -279,18 +318,19 @@ export function Thermostat({
           <Gradient 
             width={size}
             height={size}
+            trackColors={track.colors || []}
             style={{
-              backgroundImage: `conic-gradient(from 0deg, ${[...track.colors || []].reverse().map((color, index) => {
+              background: `conic-gradient(from 0deg, ${[...(track.colors || [])].reverse().map((_, index) => {
                 const offset = index === 0 ? 20 : index === track.colors.length - 1 ? 80 : (index / (track.colors.length - 1)) * 100;
-                return `${color} ${offset}%`;
-              }).join(', ')}`
+                return `var(--thermostat-color-${(track.colors.length - 1) - index}) ${offset}%`;
+              }).join(', ')}`,
             }} />
         </foreignObject>
           <mask id="arc-mask">
             <path d={arc} fill="white" />
           </mask>
           <clipPath id="clip">
-            <path d={arc} />
+            <path d={arc} /> 
           </clipPath>
         {track.markers.enabled && <DialLines
           ticks={{
@@ -313,15 +353,5 @@ export function Thermostat({
       </svg>
       
     </Arc>
-    {!disabled && <HandleContainer
-      onMouseDown={onMouseDown}
-      onMouseEnter={onMouseEnter}
-      onClick={(ev) => {
-        // we could determine how close we are to the track here and only allow events when they're closer to the
-        // arc, later job
-        return controllable && ev.stopPropagation()
-      }} ref={_handleRef} handleSize={handle.size} size={size + (handle.size * 2)}>
-      <Handle colors={handle.colors} x={handlePosition.x} y={handlePosition.y} size={size} handleSize={handle.size} />
-    </HandleContainer>}
   </Wrapper>
 }

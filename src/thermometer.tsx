@@ -1,8 +1,29 @@
-import React from 'react';
-
 import { HEIGHT_MULTIPLIER } from './constants';
+import styled from '@emotion/styled';
 
-interface ThermometerProps {
+
+
+const AnimatedRect = styled.rect`
+  transition: 0.3s ease;
+  transition-property: color, fill;
+`;
+
+const GrowingRect = styled.rect`
+  transition: 0.3s ease;
+  transition-property: y, height, color, fill;
+`;
+
+const GrowingCircle = styled.circle`
+  transition: 0.3s ease;
+  transition-property: cy, color, fill;
+`;
+
+const AnimatedCircle = styled.circle`
+  transition: 0.3s ease;
+  transition-property: color, fill;
+`;
+
+export interface ThermometerProps {
   min: number;
   max: number;
   value: number;
@@ -39,23 +60,23 @@ export function Thermometer({
   const innerCircleRadius = circleSize - (thickness * 2);
   return <svg className={className} width={size} height={height}>
     <mask id="innerMask">
-      <rect id="mask-fill" x="0" y="0" width={size} height={height} fill="white" />
-      <circle id="center-circle-mask" cx={center} cy={height - circleSize} r={circleSize - thickness}  />
-      <circle id="top-cap-mask" cx={center} cy={circleSize - thickness - ((circleSize - thickness * 2) / 2)} r={(circleSize - thickness * 2) / 2} />
-      <rect id="inside-thermo-mask" x={center - radius + thickness} y={radius} width={circleSize - thickness * 2} height={height - circleSize - radius} />
+      <AnimatedRect id="mask-fill" x="0" y="0" width={size} height={height} fill="white" />
+      <AnimatedCircle id="center-circle-mask" cx={center} cy={height - circleSize} r={circleSize - thickness}  />
+      <AnimatedCircle id="top-cap-mask" cx={center} cy={circleSize - thickness - ((circleSize - thickness * 2) / 2)} r={(circleSize - thickness * 2) / 2} />
+      <AnimatedRect id="inside-thermo-mask" x={center - radius + thickness} y={radius} width={circleSize - thickness * 2} height={height - circleSize - radius} />
     </mask>
-    <circle id="main-circle" fill="currentColor" cx={center} cy={height - circleSize} r={circleSize} mask="url(#innerMask)" />
-    <circle id="top-cap" fill="currentColor" cx={center} cy={radius} r={radius} mask="url(#innerMask)" />
-    <circle id="center-circle" fill="currentColor" cx={center} cy={height - circleSize} r={innerCircleRadius} />
-    <rect id="thermo-sides" fill="currentColor" x={center - radius} y={radius} width={circleSize} height={height - circleSize - radius}  mask="url(#innerMask)" />
+    <AnimatedCircle id="main-circle" fill="currentColor" cx={center} cy={height - circleSize} r={circleSize} mask="url(#innerMask)" />
+    <AnimatedCircle id="top-cap" fill="currentColor" cx={center} cy={radius} r={radius} mask="url(#innerMask)" />
+    <AnimatedCircle id="center-circle" fill="currentColor" cx={center} cy={height - circleSize} r={innerCircleRadius} />
+    <AnimatedRect id="thermo-sides" fill="currentColor" x={center - radius} y={radius} width={circleSize} height={height - circleSize - radius}  mask="url(#innerMask)" />
     <text style={{
       userSelect: 'none'
     }} fontSize={innerCircleRadius} textAnchor="middle" x={center} y={height - circleSize} dominantBaseline="central" alignmentBaseline="central">
       {value}{typeof suffix !== 'undefined' ? suffix : '°'}
     </text>
     <g>
-      <circle id="growing-thermo-cap" fill="currentColor" cx={center} cy={scaling} r={(circleSize - thickness * 4) / 2} />
-      <rect id="growing-thermo" fill="currentColor" x={center - radius + (thickness * 2)} y={scaling} width={circleSize - thickness * 4} height={fullBarHeight - scaling} />
+      <GrowingCircle id="growing-thermo-cap" fill="currentColor" cx={center} cy={scaling} r={(circleSize - thickness * 4) / 2} />
+      <GrowingRect id="growing-thermo" fill="currentColor" x={center - radius + (thickness * 2)} y={scaling} width={circleSize - thickness * 4} height={fullBarHeight - scaling} />
     </g>
   </svg>
 }
