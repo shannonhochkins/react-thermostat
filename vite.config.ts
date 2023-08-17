@@ -7,9 +7,6 @@ const { EsLinter, linterPlugin } = EsLint;
 // https://vitejs.dev/config/
 export default defineConfig(configEnv => {
   return {
-    optimizeDeps: {
-      exclude: ['@emotion/react', '@emotion/styled'],
-    },
     build: {
       lib: {
         entry: 'src/index.tsx',

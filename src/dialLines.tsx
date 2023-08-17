@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { merge } from './utils';
 interface Tick {
   thickness: number;
@@ -35,7 +36,7 @@ const TICK_DEFAULTS = {
   sub: TICK_DEFAULTS_SUB
 };
 
-export function DialLines({
+function DialLinesComponent({
   size,
   mask = null,
   ticks = TICK_DEFAULTS,
@@ -50,6 +51,7 @@ export function DialLines({
     sub,
     main
   } = merge(TICK_DEFAULTS, ticks);
+  console.log('re-rendering dial')
   return (
     <g mask={mask ? `url(#${mask})` : undefined}>
       {
@@ -80,3 +82,6 @@ export function DialLines({
     </g>
   );
 }
+
+export const DialLines = memo(DialLinesComponent);
+

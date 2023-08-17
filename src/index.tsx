@@ -14,8 +14,13 @@ import { Handle, DEFAULT_HANDLE_COLORS } from './handle';
 import { HEIGHT_MULTIPLIER, THICKNESS_DIVISOR, CANVAS_WIDTH, CANVAS_HEIGHT } from './constants';
 import "@fontsource/roboto/300.css";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{
+  ready: boolean;
+}>`
   position: relative;
+  transition: opacity 0.3s ease-in;
+  transition-delay: 0.3s;
+  opacity: ${props => props.ready ? 1 : 0};
 `;
 
 const ColorPicker = styled.canvas`
@@ -33,11 +38,7 @@ const HandleContainer = styled.div`
 `;
 
 
-const Thermometer = styled(ThermometerBase)<{
-  color: string;
-  handleSize: number;
-}>`
-  color: ${props => props.color};
+const Thermometer = styled(ThermometerBase)`
   font-family: "Roboto", sans-serif;
   font-weight: 300;
 `;
@@ -112,13 +113,21 @@ export interface TrackProps {
 }
 
 export interface ThermostatProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
+  /** the minimum value */
   min?: number;
+  /** the maximum value */
   max?: number;
+  /** the current value */
   value: number;
+  /** the suffix of the value in the center */
   valueSuffix?: string;
-  onChange: (value: number) => void;
+  /** Called every time the slider value changes */
+  onChange?: (value: number) => void;
+  /** the props for the handle */
   handle?: HandleProps;
+  /** if the component should be disabled */
   disabled?: boolean;
+  /** the props for the track */
   track?: TrackProps;
 };
 
@@ -134,6 +143,7 @@ export function Thermostat({
   ...rest
 }: ThermostatProps) {
   const [size, setSize] = useState(0);
+  const [ready, setReady] = useState(false);
   const updateSize = useCallback(() => {
     if (_parentRef.current) {
       const parentElement = _parentRef.current.parentElement;
@@ -154,20 +164,42 @@ export function Thermostat({
     };
   }, []);
 
-  const handle = merge({
-    ...HANDLE_DEFAULTS,
-    size: size / 15
-  }, handleInput || {});
-  const track = merge({
-    ...TRACK_DEFAULTS,
-    thickness: size / 10,
-  }, trackInput || {});
+  const handle = useMemo(() => {
+    return merge({
+      ...HANDLE_DEFAULTS,
+      size: size / 15
+    }, handleInput || {});
+  }, [size]);
+  const track = useMemo(() => {
+    return merge(
+      {
+        ...TRACK_DEFAULTS,
+        thickness: size / 10,
+      },
+      trackInput || {}
+    );
+  }, [size, trackInput]);
+  const ticks = useMemo(() => {
+    return {
+      every: track.markers.every,
+      count: track.markers.count,
+      main: {
+        thickness: 2,
+        length: track.thickness / 4,
+        ...track.markers.main
+      },
+      sub: {
+        thickness: 1,
+        length: track.thickness / 8,
+        ...track.markers.sub
+      }
+    }
+  }, [track])
   const _containerRef = useRef<HTMLDivElement>(null);
   const _svgRef = useRef<SVGSVGElement>(null);
   const _parentRef = React.useRef<HTMLDivElement>(null);
   const _styleRef = useRef<HTMLStyleElement>(null)
   const _canvasRef = useRef<HTMLCanvasElement>(null);
-  const [color, setColor] = useState('transparent');
   const _ctx = useRef<CanvasRenderingContext2D | null>(null);
   const trackInnerRadius = size / 2 - track.thickness;
   const thermoOffset = (track.thickness + (track.thickness / THICKNESS_DIVISOR));
@@ -223,8 +255,11 @@ export function Thermostat({
       if (_ctx.current) {
         const percent = ((value - min) * 100) / (max - min);
         const scaling = (CANVAS_WIDTH - 1) * percent / 100;
-        const v = _ctx.current.getImageData(scaling, 1, 1, 1).data; 
-        setColor(`rgb(${v[0]},${v[1]},${v[2]})`);
+        const v = _ctx.current.getImageData(scaling, 1, 1, 1).data;
+        _parentRef.current?.style.setProperty('--thermostat-color', `rgb(${v[0]},${v[1]},${v[2]})`);
+        if (!ready) {
+          setReady(true);
+        }
       }
     }
   }, [value, track.colors]);
@@ -238,6 +273,7 @@ export function Thermostat({
     thickness: track.thickness,
     svgSize: size,
   }), [trackInnerRadius, size, track.thickness]);
+  
 
   const calculateValues = useCallback((x: number, y: number) => {
     if (!_containerRef.current) return;
@@ -247,8 +283,8 @@ export function Thermostat({
       min,
       max,
     });
-    _containerRef.current.style.transform = `rotate(${angle}deg)`;
-    onChange(value);
+    // onChange will trigger the recalculation of the angles
+    if (typeof onChange === 'function') onChange(value);
   }, [onChange]);
 
   const bind = useGesture(
@@ -275,6 +311,7 @@ export function Thermostat({
     },
     {
       drag: {
+        delay: 0,
         filterTaps: true,
         pointer: {
           touch: true,
@@ -284,7 +321,7 @@ export function Thermostat({
     }
   );
 
-  return <Wrapper ref={_parentRef} {...rest}>
+  return <Wrapper ready={ready} ref={_parentRef} {...rest}>
     <style ref={_styleRef}></style>
     <ColorPicker width={CANVAS_WIDTH} height={CANVAS_HEIGHT} ref={_canvasRef}></ColorPicker>
     {!disabled && <HandleContainer
@@ -304,10 +341,8 @@ export function Thermostat({
       ref={_svgRef}
     >
       <Thermometer
-        handleSize={handle.size}
         textColor={'rgba(0,0,0,0.9)'}
-        color={color}
-        value={Number(value.toFixed(0))} 
+        value={value} 
         min={min}
         max={max}
         suffix={valueSuffix}
@@ -333,20 +368,7 @@ export function Thermostat({
             <path d={arc} /> 
           </clipPath>
         {track.markers.enabled && <DialLines
-          ticks={{
-            every: track.markers.every,
-            count: track.markers.count,
-            main: {
-              thickness: 2,
-              length: track.thickness / 4,
-              ...track.markers.main
-            },
-            sub: {
-              thickness: 1,
-              length: track.thickness / 8,
-              ...track.markers.sub
-            }
-          }}
+          ticks={ticks}
           mask="arc-mask"
           size={size}
           />}

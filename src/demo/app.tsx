@@ -1,26 +1,27 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
-import { css, Global } from '@emotion/react';
+import { css, Global, keyframes } from '@emotion/react';
 import { createRoot } from 'react-dom/client';
 import { Thermostat } from '..';
 import { Icon } from '@iconify/react';
 import "@fontsource/roboto/300.css";
 
+const spin = keyframes`
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+`;
+
 const FanIcon = styled(Icon)<{
   speed?: FanMode;
 }>`
-  animation-name: spin;
+  animation-name: ${spin};
   animation-duration: ${props => props.speed === 'Low' ? '5s' : props.speed === 'Mid' ? '3s' : props.speed === 'High' ? '1s' : '0s'};
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  @keyframes spin {
-    from {
-      transform:rotate(0deg);
-    }
-    to {
-      transform:rotate(360deg);
-    }
-  }
 `;
 
 const Fab = styled.button<{
@@ -53,29 +54,7 @@ const Area = styled.div`
   justify-content: center;
   background: radial-gradient(circle at var(--ha-x) var(--ha-y), rgb(25 49 58) 0%, rgba(17, 24, 39, 1) 50%, rgba(17, 24, 39, 1) 100%);
   background-size: cover;
-  animation: gradientAnimation 15s linear infinite;
-  @keyframes gradientAnimation {
-    0% { 
-      --ha-x: 0%;
-      --ha-y: 0%;
-    }
-    25% { 
-      --ha-x: 0%;
-      --ha-y: 100%;
-    }
-    50% { 
-      --ha-x: 100%;
-      --ha-y: 100%;
-    }
-    75% { 
-      --ha-x: 100%;
-      --ha-y: 0%;
-    }
-    100% { 
-      --ha-x: 0%;
-      --ha-y: 0%;
-    }
-  }
+
 `;
 
 const Actions = styled.div`
@@ -229,7 +208,7 @@ function Root() {
             colors
           }}
           onChange={(newTemp) => {
-            setTemp(newTemp);
+            setTemp(Number(newTemp.toFixed(0)));
           }}
         />
         <Fab style={{

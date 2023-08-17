@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { keyframes } from '@emotion/react';
 import { HandleColors } from '.';
 
 export interface HandleProps extends React.ComponentProps<'div'> {
@@ -7,6 +8,18 @@ export interface HandleProps extends React.ComponentProps<'div'> {
   handleSize: number;
   colors?: HandleColors;
 }
+
+const pulse = keyframes`
+  0% {
+    transform: scale(1.4);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1.4);
+  }
+`
 
 const HandleBase = styled.div<{
   radius: number;
@@ -27,22 +40,11 @@ const HandleBase = styled.div<{
     animation-timing-function: ease-out;
     animation-duration: 1500ms;
     animation-iteration-count: infinite;
-    animation-name: pulse;
+    animation-name: ${pulse};
     position: absolute;
     inset:0;
     border-radius: 50%;
     z-index: 1;
-    @keyframes pulse {
-      0% {
-        transform: scale(1.4);
-      }
-      50% {
-        transform: scale(0.8);
-      }
-      100% {
-        transform: scale(1.4);
-      }
-    }
   }
   &:before {
     content: '';

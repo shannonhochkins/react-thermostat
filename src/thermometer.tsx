@@ -58,7 +58,9 @@ export function Thermometer({
   // animating height based on value of slider
   const scaling = ((growingMaxY - growingMinY) * percent / 100) + growingMinY;
   const innerCircleRadius = circleSize - (thickness * 2);
-  return <svg className={className} width={size} height={height}>
+  return <svg className={className} width={size} height={height} style={{
+    color: `var(--thermostat-color, transparent)`
+  }}>
     <mask id="innerMask">
       <AnimatedRect id="mask-fill" x="0" y="0" width={size} height={height} fill="white" />
       <AnimatedCircle id="center-circle-mask" cx={center} cy={height - circleSize} r={circleSize - thickness}  />
