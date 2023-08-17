@@ -7,6 +7,9 @@ const { EsLinter, linterPlugin } = EsLint;
 // https://vitejs.dev/config/
 export default defineConfig(configEnv => {
   return {
+    optimizeDeps: {
+      exclude: ['@emotion/react', '@emotion/styled'],
+    },
     build: {
       lib: {
         entry: 'src/index.tsx',
@@ -19,6 +22,10 @@ export default defineConfig(configEnv => {
           ...Object.keys(packageJson.peerDependencies),
           'react/jsx-runtime',
           'react-is',
+          '@emotion/sheet',
+          '@emotion/cache',
+          '@emotion/serialize',
+          '@emotion/utils',
         ],
         output: {
           globals: {
@@ -27,7 +34,12 @@ export default defineConfig(configEnv => {
             '@emotion/styled': '@emotion/styled',
             '@emotion/react': '@emotion/react',
             'react/jsx-runtime': 'react/jsx-runtime',
-            '@use-gesture/react': '@use-gesture/react'
+            '@use-gesture/react': '@use-gesture/react',
+            'react-is': 'react-is',
+            '@emotion/sheet': '@emotion/sheet',
+            '@emotion/cache': '@emotion/cache',
+            '@emotion/serialize': '@emotion/serialize',
+            '@emotion/utils': '@emotion/utils',
           }
         }
       },

@@ -6,9 +6,11 @@ const { EsLinter, linterPlugin } = EsLint;
 // https://vitejs.dev/config/
 export default defineConfig(configEnv => {
   return {
-    base: '',
+    base: '/react-thermostat/',
     build: {
       outDir: 'demo-dist',
+      cssTarget: 'es2020',
+      target: 'es2020',
     },
     plugins: [
       react({
