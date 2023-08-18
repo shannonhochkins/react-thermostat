@@ -1,7 +1,7 @@
 {
   "name": "react-thermostat",
   "private": false,
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A Controller to display temperature or use with a smart home integration like home assistant (react application talking to web sockets or rest api)",
   "keywords": [
     "react",
