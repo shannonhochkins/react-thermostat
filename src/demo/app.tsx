@@ -203,6 +203,7 @@ function Root() {
           max={36}
           disabled={!on}
           value={temp}
+          valueSuffix={'°C'}
           track={{
             colors
           }}

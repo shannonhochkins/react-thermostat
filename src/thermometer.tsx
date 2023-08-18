@@ -74,7 +74,10 @@ export function Thermometer({
     <text style={{
       userSelect: 'none'
     }} fontSize={innerCircleRadius} textAnchor="middle" x={center} y={height - circleSize} dominantBaseline="central" alignmentBaseline="central">
-      {value}{typeof suffix !== 'undefined' ? suffix : '°'}
+      {value}
+      {typeof suffix !== 'undefined' && <tspan dx="0" dy={-innerCircleRadius / 4} style={{
+        fontSize: innerCircleRadius / 4
+      }}>{suffix}</tspan>}
     </text>
     <g>
       <GrowingCircle id="growing-thermo-cap" fill="currentColor" cx={center} cy={scaling} r={(circleSize - thickness * 4) / 2} />
