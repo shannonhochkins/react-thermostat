@@ -10,10 +10,10 @@ A react thermostat which can be easily plugged into any smart home application, 
 
 ## Help me out?
 
-I've spent a lot of time on this, you're free to use it but would appreciate a small donation if you're feeling generous! Buy me a beer!
+I've spent a lot of time on this, you're free to use it but would appreciate a small donation if you're feeling generous! Buy me a coffee!
 
 
-[Buy me a beer!](https://www.buymeacoffee.com/jinglezzz)
+[Buy me a coffee!](https://www.buymeacoffee.com/jinglezzz)
 
 
 ## Install
